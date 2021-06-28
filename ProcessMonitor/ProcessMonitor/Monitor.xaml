@@ -1,0 +1,73 @@
+﻿<Window x:Class="ProcessMonitor.Monitor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:diag="clr-namespace:System.Diagnostics;assembly=System"
+        xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        xmlns:local="clr-namespace:ProcessMonitor"
+        mc:Ignorable="d"
+
+    Title="Monitor" Height="450" Width="800" Icon="/favicon.ico">
+    <Window.Resources>
+        <ObjectDataProvider x:Key="processes" MethodName="GetProcesses" ObjectType="{x:Type diag:Process}"></ObjectDataProvider>
+        <CollectionViewSource x:Key="processesView" Source="{StaticResource processes}">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="ProcessName"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+        <local:NumberConvertor x:Key="formattedNumber" />
+        <local:LargeValueConverter x:Key="MinThresold" />
+    </Window.Resources>
+    <DockPanel>
+        
+        <Grid>
+            <ListView Name="listView1"
+                  ItemsSource="{Binding Source={StaticResource processesView}}" >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <WrapPanel Margin="20 0 0 0" Name="wrapProcessPanel">
+                            <TextBlock Text="{Binding Path=Id}" MinWidth="80" />
+                            <TextBlock Text="{Binding Path=StartTime, StringFormat=T}" MinWidth="120" />
+                            <TextBlock Text="{Binding Path=PriorityClass}" MinWidth="80" />
+                            <TextBlock Text="{Binding Path=ProcessName, StringFormat=Process \{0\}}" MinWidth="320" />
+                            <!--<TextBlock>
+                            <TextBlock.Text>
+                                <Binding Path="WorkingSet" StringFormat="{}{0:N0} bytes" />
+                                <Binding Path="WorkingSet" Converter="{StaticResource formattedNumber}" />
+                                
+                            </TextBlock.Text>
+                        </TextBlock>-->
+                            <TextBlock Name="workingSet" Text="{Binding Path=WorkingSet64, Converter={StaticResource formattedNumber}, StringFormat={}{0:N0}, ConverterParameter=SI}"
+                                   TextAlignment="Right" MinWidth="80" />
+                        </WrapPanel>
+                        <DataTemplate.Triggers>
+                            <DataTrigger Binding="{Binding Path=PriorityClass}" Value="AboveNormal">
+                                <Setter TargetName="wrapProcessPanel" Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush>
+                                            <GradientStop Color="Salmon" Offset="0" />
+                                            <GradientStop Color="Salmon" Offset="0.4" />
+                                            <GradientStop Color="White" Offset="1" />
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=WorkingSet64, Converter={StaticResource MinThresold}, ConverterParameter=20000000}" Value="true">
+                                <Setter TargetName="wrapProcessPanel" Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush>
+                                            <GradientStop Color="#F6EB44" Offset="0.4" />
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </DataTemplate.Triggers>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </Grid>
+    </DockPanel>
+    
+</Window>
