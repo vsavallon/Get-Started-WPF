@@ -8,10 +8,10 @@
         xmlns:local="clr-namespace:ProcessMonitor"
         mc:Ignorable="d"
 
-    Title="Monitor" Height="450" Width="800" Icon="/favicon.ico">
+    Title="Monitor" Height="680" Width="720" Icon="/favicon.ico">
     <Window.Resources>
         <ObjectDataProvider x:Key="processes" MethodName="GetProcesses" ObjectType="{x:Type diag:Process}"></ObjectDataProvider>
-        <CollectionViewSource x:Key="processesView" Source="{StaticResource processes}">
+        <CollectionViewSource x:Key="processesView" Source="{StaticResource processes}" Filter="CollectionViewSource_Filter">
             <CollectionViewSource.SortDescriptions>
                 <scm:SortDescription PropertyName="ProcessName"/>
             </CollectionViewSource.SortDescriptions>
@@ -20,7 +20,24 @@
         <local:LargeValueConverter x:Key="MinThresold" />
     </Window.Resources>
     <DockPanel>
-        
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+            <Label FontSize="18" Foreground="#12679A">Sort Order : </Label>
+            <ComboBox Width="100" Name="sortingCombo" SelectedIndex="0" 
+                      SelectionChanged="sortingCombo_SelectionChanged"
+                      HorizontalContentAlignment="Center" VerticalContentAlignment="Center" >
+                <ComboBoxItem>ProcessName</ComboBoxItem>
+                <ComboBoxItem>ID</ComboBoxItem>
+                <ComboBoxItem>WorkingSet64</ComboBoxItem>
+            </ComboBox>
+            <Label Margin="20 0 0 0" FontSize="18" Foreground="#12679A">Priority</Label>
+            <ComboBox Width="100" Name="priorityCombo" SelectedIndex="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                      SelectionChanged="priorityCombo_SelectionChanged" >
+                <ComboBoxItem>All</ComboBoxItem>
+                <ComboBoxItem>Low</ComboBoxItem>
+                <ComboBoxItem>High</ComboBoxItem>
+                <ComboBoxItem>Normal</ComboBoxItem>
+            </ComboBox>
+        </StackPanel>
         <Grid>
             <ListView Name="listView1"
                   ItemsSource="{Binding Source={StaticResource processesView}}" >
@@ -30,7 +47,7 @@
                             <TextBlock Text="{Binding Path=Id}" MinWidth="80" />
                             <TextBlock Text="{Binding Path=StartTime, StringFormat=T}" MinWidth="120" />
                             <TextBlock Text="{Binding Path=PriorityClass}" MinWidth="80" />
-                            <TextBlock Text="{Binding Path=ProcessName, StringFormat=Process \{0\}}" MinWidth="320" />
+                            <TextBlock Text="{Binding Path=ProcessName, StringFormat=Process \{0\}}" MinWidth="280" />
                             <!--<TextBlock>
                             <TextBlock.Text>
                                 <Binding Path="WorkingSet" StringFormat="{}{0:N0} bytes" />
