@@ -6,8 +6,10 @@
         xmlns:matdesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:SamplesInWPF"
         mc:Ignorable="d"
-        Title="Avallon Login Window" Height="450" Width="800" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="Avallon Login Window" Height="450" Width="800" WindowStyle="None" 
+        ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Icon="/icon_fire.ico">
     <Grid MouseDown="Border_MouseDown">
+
         <Grid.Background>
             <LinearGradientBrush>
                 <GradientStop Color="#D92A2A" Offset="1" />
@@ -25,7 +27,7 @@
                     <matdesign:PackIcon Kind="User" Width="25" Height="25" Foreground="White" />
                     <TextBox x:Name="txtUsername" Margin="10 0"
                              Foreground="Black" Background="White" Width="250" BorderBrush="White" 
-                             CaretBrush="#FFD94448" SelectionBrush="#FFD94448" 
+                             CaretBrush="#FFD94448" SelectionBrush="#FFD94448"
                              VerticalContentAlignment="Center" FontSize="20" matdesign:HintAssist.Hint="Username" FontFamily="Cambria" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="10">
@@ -35,13 +37,15 @@
                              CaretBrush="#FFD94448" SelectionBrush="#FFD94448" 
                              VerticalContentAlignment="Center" FontSize="18" matdesign:HintAssist.Hint="*******" FontFamily="Cambria" />
                 </StackPanel>
-                <StackPanel HorizontalAlignment="Center" Margin="10" >
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10" >
                     <Button Content="Login" Width="100" Height="40" x:Name="btnLogin" Click="btnLogin_Click"
                         Foreground="White" Background="#D94448" FontSize="14" FontFamily="Cambria"
                         matdesign:ButtonAssist.CornerRadius="10" BorderThickness="2" BorderBrush="#D94448"                        
                         />
-                    <TextBlock Text="If you don't have any account Click Here" Foreground="Wheat" FontSize="16" Margin="0">
-                    </TextBlock>
+                    <Button Content="Register" Width="100" Height="40" x:Name="btnRegister" Click="btnRegister_Click"
+                        Foreground="White" Background="#D94448" FontSize="14" FontFamily="Cambria" Margin="20 0 0 0"
+                        matdesign:ButtonAssist.CornerRadius="10" BorderThickness="2" BorderBrush="#D94448"                        
+                        />
                 </StackPanel>
                 
             </StackPanel>
